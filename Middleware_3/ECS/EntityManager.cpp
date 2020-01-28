@@ -112,6 +112,10 @@ void EntityManager::reset()
 		deleteEntity(entity.first);
 	}
 	mEntities.clear();
+	for (auto& pair : mComponentViseMap)
+	{
+		pair.second.clear();
+	}
 }
 
 EntityId EntityManager::createEntity()
