@@ -148,3 +148,4 @@ void          removeInputAction(InputAction* pAction);
 bool          setEnableCaptureInput(bool enable);
 /// Used to enable/disable text input for non-keyboard setups (virtual keyboards for console/mobile, ...)
 void          setVirtualKeyboard(uint32_t type);
+void          resetInputSystemState();

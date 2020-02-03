@@ -1311,6 +1311,13 @@ struct InputSystemImpl : public gainput::InputListener
 	{
 		return 0;
 	}
+
+	void resetAll()
+	{
+		pInputManager->ClearAllStates(mMouseDeviceID);
+		pInputManager->ClearAllStates(mRawMouseDeviceID);
+		pInputManager->ClearAllStates(mKeyboardDeviceID);
+	}
 };
 
 static InputSystemImpl* pInputSystem = NULL;
@@ -1377,4 +1384,12 @@ void setVirtualKeyboard(uint32_t type)
 
 	pInputSystem->SetVirtualKeyboard(type);
 }
+
+void resetInputSystemState()
+{
+	ASSERT(pInputSystem);
+
+	pInputSystem->resetAll();;
+}
+
 
