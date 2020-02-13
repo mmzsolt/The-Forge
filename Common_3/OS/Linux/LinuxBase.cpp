@@ -296,6 +296,12 @@ int LinuxMain(int argc, char** argv, IApp* app)
 		pApp->Update(deltaTime);
 		pApp->Draw();
 
+		int toSleep = 25 - deltaTime*1000.0f;
+		if (toSleep > 0)
+		{
+			Thread::Sleep(toSleep);
+		}
+
 #ifdef AUTOMATED_TESTING
 		//used in automated tests only.
 		testingFrameCount++;
