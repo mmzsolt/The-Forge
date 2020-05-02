@@ -318,6 +318,8 @@ FileWatcher* fsCreateFileWatcher(const Path* path, FileWatcherEventMask eventMas
 	watcher->mThreadDesc.pData = watcher;
 
 	watcher->mThread = create_thread(&watcher->mThreadDesc);
+
+	return watcher;
 }
 
 void fsFreeFileWatcher(FileWatcher* fileWatcher)
