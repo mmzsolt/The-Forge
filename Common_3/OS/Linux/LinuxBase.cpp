@@ -298,6 +298,7 @@ int LinuxMain(int argc, char** argv, IApp* app)
 
 	while (!quit)
 	{
+		Thread::Sleep(10);
 		float deltaTime = deltaTimer.GetMSec(true) / 1000.0f;
 		// if framerate appears to drop below about 6, assume we're at a breakpoint and simulate 20fps.
 		if (deltaTime > 0.15f)
