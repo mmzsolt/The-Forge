@@ -1,3 +1,4 @@
+/*
 #include "EAStdC/EAMemory.cpp"
 #include "EAStdC/EASprintf.cpp"
 #include "assert.cpp"
@@ -9,3 +10,4 @@
 #include "string.cpp"
 #include "thread_support.cpp"
 #include "allocator_forge.cpp"
+*/

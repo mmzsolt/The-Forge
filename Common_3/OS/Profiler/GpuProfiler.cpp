@@ -289,7 +289,7 @@ ProfileToken cmdBeginGpuTimestampQuery(Cmd* pCmd, struct GpuProfiler* pGpuProfil
         cmdBeginDebugMarker(pCmd, color.getX(), color.getY(), color.getZ(), pName);
     }
 
-    ASSERT(pGpuProfiler->mCurrentTimerCount < pGpuProfiler->mCurrentPoolIndex && "Duplicate timers found in one gpu frame");
+    //ASSERT(pGpuProfiler->mCurrentTimerCount < pGpuProfiler->mCurrentPoolIndex && "Duplicate timers found in one gpu frame");
     ++pGpuProfiler->mCurrentTimerCount;
     return node->mToken;
 }
