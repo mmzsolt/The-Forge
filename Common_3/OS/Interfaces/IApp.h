@@ -94,6 +94,8 @@ public:
 
 	virtual const char* GetName() = 0;
 
+	virtual int FramesUpdated() { return 1; }
+
 	struct Settings
 	{
 		/// Window width
