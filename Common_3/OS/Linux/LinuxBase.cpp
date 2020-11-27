@@ -888,12 +888,21 @@ int LinuxMain(int argc, char** argv, IApp* app)
 
         int64_t frameEnd = getUSec();
         
-        int64_t frameTime = frameEnd - frameBegin;
+        int64_t frameTime = frameEnd - frameBegin;        
+        if (app->IsDebugging())
+        {
+            frameTime = 1000.0f * nominalFrameTime;
+        }
+
         framesToUpdate = ceilf32(frameTime / (1000.0f * nominalFrameTime));
         int32_t frames = app->FramesUpdated();
         numberOfFrames += frames;
         int64_t sleepTime = 1000 * numberOfFrames / 60;
         int64_t totalElapsed = ((frameEnd - firstCounter) / 1000);
+        if (app->IsDebugging())
+        {
+            totalElapsed = sleepTime - nominalFrameTime;
+        }
         //printf("updated %d frames in %d so sleeping for:%d\n", frames, (int32_t)(frameTime), (int32_t)(sleepTime - totalElapsed));
         //printf("total frames: %d (%d) time: %d fps:%f\n", (int32_t)numberOfFrames, (int32_t)sleepTime, (int32_t)totalElapsed, (float)numberOfFrames / (sleepTime / 1000));
         sleepTime -= totalElapsed;
