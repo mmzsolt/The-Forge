@@ -138,7 +138,7 @@ void EntityManager::reset()
 	mEntities.clear();
 
 	// Clear stale component pointers
-	for (eastl::pair<uint32_t, ComponentLookup> pair : mComponentViseMap)
+	for (auto& pair : mComponentViseMap)
 	{
 		pair.second.clear();
 	}

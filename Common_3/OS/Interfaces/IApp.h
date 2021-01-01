@@ -94,6 +94,10 @@ public:
 
 	virtual const char* GetName() = 0;
 
+	virtual int FramesUpdated() { return 1; }
+
+	virtual bool IsDebugging() { return false; }
+
 	struct Settings
 	{
 		/// Window width

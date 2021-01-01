@@ -886,21 +886,43 @@ int LinuxMain(int argc, char** argv, IApp* app)
 	if (!pApp->Load())
 		return EXIT_FAILURE;
 
-	int64_t lastCounter = getUSec();
+    int64_t numberOfFrames = 0;
+    int64_t firstCounter = getUSec() - 16666;
+    float framesToUpdate = 1.0f;
+    constexpr float nominalFrameTime = 1000.0f / 60.0f;
 	while (!gQuit)
 	{
-		int64_t counter = getUSec();
-		float deltaTime = (float)(counter - lastCounter) / (float)1e6;
-		lastCounter = counter;
-
-		// if framerate appears to drop below about 6, assume we're at a breakpoint and simulate 20fps.
-		if (deltaTime > 0.15f)
-			deltaTime = 0.05f;
+        int64_t frameBegin = getUSec();
 
 		gQuit = handleMessages(&gWindow);
 
-		pApp->Update(deltaTime);
+		pApp->Update(framesToUpdate * nominalFrameTime / 1000.0f);
 		pApp->Draw();
+
+        int64_t frameEnd = getUSec();
+        
+        int64_t frameTime = frameEnd - frameBegin;        
+        if (app->IsDebugging())
+        {
+            frameTime = 1000.0f * nominalFrameTime;
+        }
+
+        framesToUpdate = ceilf32(frameTime / (1000.0f * nominalFrameTime));
+        int32_t frames = app->FramesUpdated();
+        numberOfFrames += frames;
+        int64_t sleepTime = 1000 * numberOfFrames / 60;
+        int64_t totalElapsed = ((frameEnd - firstCounter) / 1000);
+        if (app->IsDebugging())
+        {
+            totalElapsed = sleepTime - nominalFrameTime;
+        }
+        //printf("updated %d frames in %d so sleeping for:%d\n", frames, (int32_t)(frameTime), (int32_t)(sleepTime - totalElapsed));
+        //printf("total frames: %d (%d) time: %d fps:%f\n", (int32_t)numberOfFrames, (int32_t)sleepTime, (int32_t)totalElapsed, (float)numberOfFrames / (sleepTime / 1000));
+        sleepTime -= totalElapsed;
+        if (sleepTime > 0)
+        {
+            Thread::Sleep((int32_t)sleepTime);
+        }
 
         // Graphics reset in cases where device has to be re-created.
 		if (pApp->mSettings.mResetGraphics) 
@@ -908,7 +930,7 @@ int LinuxMain(int argc, char** argv, IApp* app)
 			pApp->Unload();
 			pApp->Load();
 			pApp->mSettings.mResetGraphics = false;
-		}
+		}        
 #ifdef AUTOMATED_TESTING
 		//used in automated tests only.
 		testingFrameCount++;
